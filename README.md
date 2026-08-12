@@ -51,6 +51,8 @@ On Linux or macOS, use `./gradlew` instead. Release outputs are unsigned unless 
 
 CI additionally expects the base64-encoded keystore secret `ANDROID_KEYSTORE_B64`. Never commit a keystore or signing credentials.
 
+Follow [docs/RELEASE_SIGNING.md](docs/RELEASE_SIGNING.md) for the one-time production key setup and safe backup procedure.
+
 ## Architecture
 
 - `MainActivity` owns the small Views UI, gestures, incoming intents, file picker, and PiP parameters.

@@ -46,6 +46,8 @@ jobs:
       contents: write
       id-token: write
       attestations: write
+    env:
+      SIGNING_CONFIGURED: ${{ secrets.ANDROID_KEYSTORE_B64 != '' && secrets.ANDROID_KEYSTORE_PASSWORD != '' && secrets.ANDROID_KEY_ALIAS != '' && secrets.ANDROID_KEY_PASSWORD != '' }}
     steps:
       - name: Checkout immutable release
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -77,6 +79,7 @@ jobs:
           validate-wrappers: true
 
       - name: Decode upload keystore
+        if: env.SIGNING_CONFIGURED == 'true'
         shell: bash
         env:
           ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
@@ -86,6 +89,7 @@ jobs:
           chmod 600 "$RUNNER_TEMP/release.jks"
 
       - name: Build signed release
+        if: env.SIGNING_CONFIGURED == 'true'
         env:
           ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/release.jks
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -94,6 +98,7 @@ jobs:
         run: ./gradlew --stacktrace --no-configuration-cache lintRelease testReleaseUnitTest assembleRelease bundleRelease cyclonedxBom
 
       - name: Prepare release assets
+        if: env.SIGNING_CONFIGURED == 'true'
         shell: bash
         run: |
           mkdir -p release-assets
@@ -105,6 +110,7 @@ jobs:
           (cd release-assets && sha256sum FlashPlay.apk FlashPlay.aab mapping.txt sbom.cdx.json > SHA256SUMS.txt)
 
       - name: Verify APK signature
+        if: env.SIGNING_CONFIGURED == 'true'
         shell: bash
         run: |
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner -print | sort -V | tail -1)"
@@ -112,6 +118,7 @@ jobs:
           "$APKSIGNER" verify --verbose --print-certs release-assets/FlashPlay.apk
 
       - name: Attest APK and AAB
+        if: env.SIGNING_CONFIGURED == 'true'
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: |
@@ -119,6 +126,7 @@ jobs:
             release-assets/FlashPlay.aab
 
       - name: Attest release SBOM
+        if: env.SIGNING_CONFIGURED == 'true'
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: |
@@ -127,12 +135,19 @@ jobs:
           sbom-path: release-assets/sbom.cdx.json
 
       - name: Upload release assets
+        if: env.SIGNING_CONFIGURED == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
         run: gh release upload "$RELEASE_TAG" release-assets/*
 
       - name: Remove keystore
-        if: always()
+        if: always() && env.SIGNING_CONFIGURED == 'true'
         shell: bash
         run: rm -f "$RUNNER_TEMP/release.jks"
+
+      - name: Report missing release signing
+        if: env.SIGNING_CONFIGURED != 'true'
+        run: |
+          echo "### Release assets not built" >> "$GITHUB_STEP_SUMMARY"
+          echo "Configure all Android signing secrets in the protected release environment, then rebuild the existing tag with workflow_dispatch." >> "$GITHUB_STEP_SUMMARY"
