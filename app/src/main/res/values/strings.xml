@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlashPlay</string>
+    <string name="empty_title">Открой видео и смотри без задержек</string>
+    <string name="open_video">Открыть видео</string>
+    <string name="open_another">Открыть другое</string>
+    <string name="speed_default">Скорость 1×</string>
+    <string name="speed_format">Скорость %1$s×</string>
+    <string name="open_file">Файл на устройстве</string>
+    <string name="open_url">Видео по ссылке</string>
+    <string name="url_hint">https://example.com/video.mp4</string>
+    <string name="play">Смотреть</string>
+    <string name="cancel">Отмена</string>
+    <string name="invalid_url">Нужна безопасная ссылка https://</string>
+    <string name="seek_feedback">%1$+d сек</string>
+    <string name="brightness_feedback">Яркость %1$d%%</string>
+    <string name="volume_feedback">Громкость %1$d%%</string>
+    <string name="player_unavailable">Плеер не удалось запустить</string>
+    <string name="playback_error">Видео не удалось открыть. Выберите файл снова или проверьте ссылку.</string>
+</resources>

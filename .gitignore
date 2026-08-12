@@ -1,0 +1,14 @@
+.gradle/
+.idea/
+*.iml
+local.properties
+build.log
+*.log
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+.firecrawl/
+*.jks
+*.keystore
+keystore.properties

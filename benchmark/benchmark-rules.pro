@@ -1,0 +1,5 @@
+-keep class com.bossincrypto.flashplay.benchmark.** { *; }
+-dontobfuscate
+-dontwarn com.google.errorprone.annotations.CanIgnoreReturnValue
+-dontwarn com.google.errorprone.annotations.MustBeClosed
+-dontwarn javax.lang.model.element.Modifier

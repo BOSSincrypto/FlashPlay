@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FlashPlay</string>
+    <string name="empty_title">Open a video and play without delay</string>
+    <string name="open_video">Open video</string>
+    <string name="open_another">Open another</string>
+    <string name="speed_default">Speed 1×</string>
+    <string name="speed_format">Speed %1$s×</string>
+    <string name="open_file">File on device</string>
+    <string name="open_url">Video URL</string>
+    <string name="url_hint">https://example.com/video.mp4</string>
+    <string name="play">Play</string>
+    <string name="cancel">Cancel</string>
+    <string name="invalid_url">Enter a secure https:// URL</string>
+    <string name="seek_feedback">%1$+d s</string>
+    <string name="brightness_feedback">Brightness %1$d%%</string>
+    <string name="volume_feedback">Volume %1$d%%</string>
+    <string name="player_unavailable">The player could not start</string>
+    <string name="playback_error">The video could not be opened. Pick the file again or check the link.</string>
+</resources>
