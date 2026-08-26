@@ -50,7 +50,7 @@ jobs:
           cache-provider: basic
           cache-read-only: true
       - run: ./gradlew --stacktrace assembleDebug
-      - uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
+      - uses: github/codeql-action/analyze@db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28 # v4.37.8
 
   osv:
     if: github.event_name == 'schedule'
